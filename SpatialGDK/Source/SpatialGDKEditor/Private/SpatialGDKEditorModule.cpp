@@ -27,6 +27,7 @@
 #include "Engine/World.h"
 #include "EngineClasses/SpatialWorldSettings.h"
 #include "EngineUtils.h"
+#include "FileHelpers.h"
 #include "IAutomationControllerModule.h"
 #include "SpatialFunctionalTest.h"
 #include "Utils/LaunchConfigurationEditor.h"
@@ -68,6 +69,10 @@ void FSpatialGDKEditorModule::StartupModule()
 		{
 			GEditor->EndPlayMap();
 		}
+	});
+
+	UEditorLoadingAndSavingUtils::OnSaveWorldDelegate.AddLambda([](UWorld* World) {
+		UE_LOG(LogTemp, Display, TEXT("I am saving a map named %s."), *World->GetName());
 	});
 }
 

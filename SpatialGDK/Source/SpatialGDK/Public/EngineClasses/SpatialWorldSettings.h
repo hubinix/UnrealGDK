@@ -60,6 +60,8 @@ public:
 	 * Otherwise return the single worker settings class.  */
 	TSubclassOf<USpatialMultiWorkerSettings> GetMultiWorkerSettingsClass(bool bForceNonEditorSettings = false);
 
+	TArray<char> RawSnapshotData;
+
 #if WITH_EDITORONLY_DATA
 	/** Defines how Unreal Editor will run the Tests in this map, without changing current Settings. */
 	UPROPERTY(EditAnywhere, Category = "Testing")
