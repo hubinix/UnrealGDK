@@ -60,7 +60,9 @@ public:
 	 * Otherwise return the single worker settings class.  */
 	TSubclassOf<USpatialMultiWorkerSettings> GetMultiWorkerSettingsClass(bool bForceNonEditorSettings = false);
 
-	TArray<char> RawSnapshotData;
+	// Stores the raw byte data for the snapshot, not meant to be viewed or changed manually
+	UPROPERTY(VisibleAnywhere, AdvancedDisplay, Category = "Internal SpatialOS Data")
+	TArray<uint8> RawSnapshotData;
 
 #if WITH_EDITORONLY_DATA
 	/** Defines how Unreal Editor will run the Tests in this map, without changing current Settings. */

@@ -134,6 +134,7 @@ USpatialGDKSettings::USpatialGDKSettings(const FObjectInitializer& ObjectInitial
 	, SamplingProbability(1.0f)
 	, MaxEventTracingFileSizeBytes(DefaultEventTracingFileSize)
 	, bEnableAlwaysWriteRPCs(false)
+	, bEnableActorsInSnapshots(true) // TODOODOODOODODO: THIS SHOULD BE FALSEEEEE
 {
 	DefaultReceptionistHost = SpatialConstants::LOCAL_HOST;
 	RPCRingBufferSizeOverrides.Add(ERPCType::ServerAlwaysWrite, 1);
