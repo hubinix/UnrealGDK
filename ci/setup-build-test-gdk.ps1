@@ -70,6 +70,7 @@ class TestSuite {
 $tests = @()
 
 if ((Test-Path env:TEST_CONFIG) -And ($env:TEST_CONFIG -eq "Native")) {
+    Write-Output "Native tests set"
     # We run spatial tests against Vanilla UE4
     $tests += [TestSuite]::new($gdk_test_project, "SpatialNetworkingMap", "VanillaTestResults", "${test_map_path}CI_Premerge/", "$user_gdk_settings", $False, "$user_cmd_line_args")
 
@@ -82,6 +83,7 @@ if ((Test-Path env:TEST_CONFIG) -And ($env:TEST_CONFIG -eq "Native")) {
     }
 }
 else {
+    Write-Output "Non native tests set"
     # We run all tests and networked functional maps
     $tests += [TestSuite]::new($gdk_test_project, "SpatialNetworkingMap", "TestResults", "SpatialGDK.+${test_map_path}CI_Premerge/+${test_map_path}CI_Premerge_Spatial_Only/", "$user_gdk_settings", $True, "$user_cmd_line_args")
 
@@ -125,7 +127,7 @@ class CachedProject {
 }
 
 $projects_cached = @()
-
+Write-Output "Starting tests, collected tests: $($tests)"
 Foreach ($test in $tests) {
     $test_repo_url = $test.test_project_target.test_repo_url
     $test_repo_branch = $test.test_project_target.test_repo_branch
@@ -145,6 +147,9 @@ Foreach ($test in $tests) {
         }
     }
 
+    Write-Output "Processing test: $($test)"
+
+    Write-Output "project_is_cached: $($project_is_cached)"
     if (-Not $project_is_cached) {
         # Build the testing project
         Start-Event "build-project" "command"
@@ -164,6 +169,7 @@ Foreach ($test in $tests) {
         Finish-Event "build-project" "command"
     }
 
+    Write-Output "env:BUILD_PLATFORM: $($env:BUILD_PLATFORM), env:BUILD_TARGET: $($env:BUILD_TARGET), env:BUILD_STATE: $($env:BUILD_STATE)"
     # Only run tests on Windows, as we do not have a linux agent - should not matter
     if ($env:BUILD_PLATFORM -eq "Win64" -And $env:BUILD_TARGET -eq "Editor" -And $env:BUILD_STATE -eq "Development") {
         Start-Event "test-gdk" "command"
